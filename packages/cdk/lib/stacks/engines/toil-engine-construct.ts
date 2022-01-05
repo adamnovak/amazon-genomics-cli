@@ -4,7 +4,7 @@ import { IVpc } from "aws-cdk-lib/aws-ec2";
 import { FargateTaskDefinition, LogDriver } from "aws-cdk-lib/aws-ecs";
 import { ApiProxy, SecureService } from "../../constructs";
 import { IRole } from "aws-cdk-lib/aws-iam";
-import { createEcrImage, renderPythonLambda, renderServiceWithTaskDefinition } from "../../util";
+import { createEcrImage, renderServiceWithTaskDefinition } from "../../util";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { EngineOptions, ServiceContainer } from "../../types";
 import { LogGroup, ILogGroup } from "aws-cdk-lib/aws-logs";

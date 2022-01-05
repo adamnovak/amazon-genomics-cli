@@ -8,6 +8,7 @@ import { BatchConstruct, BatchConstructProps } from "./engines/batch-construct";
 import { CromwellEngineConstruct } from "./engines/cromwell-engine-construct";
 import { NextflowEngineConstruct } from "./engines/nextflow-engine-construct";
 import { MiniwdlEngineConstruct } from "./engines/miniwdl-engine-construct";
+import { ToilEngineConstruct } from "./engines/toil-engine-construct";
 
 export interface ContextStackProps extends StackProps {
   readonly contextParameters: ContextAppParameters;
@@ -35,6 +36,9 @@ export class ContextStack extends Stack {
       case "miniwdl":
         this.renderMiniwdlStack(props);
         break;
+      case "toil":
+        this.renderToilStack(props);
+        break; 
       default:
         throw Error(`Engine '${engineName}' is not supported`);
     }
@@ -84,6 +88,24 @@ export class ContextStack extends Stack {
       ...commonEngineProps,
     }).outputToParent();
   }
+  
+  private renderToilStack(props: ContextStackProps) {
+    const batchProps = this.getToilBatchProps(props);
+    const batchStack = this.renderBatchStack(batchProps);
+
+    let jobQueue;
+    if (props.contextParameters.requestSpotInstances) {
+      jobQueue = batchStack.batchSpot.jobQueue;
+    } else {
+      jobQueue = batchStack.batchOnDemand.jobQueue;
+    }
+
+    const commonEngineProps = this.getCommonEngineProps(props);
+    new ToilEngineConstruct(this, "toil", {
+      jobQueue,
+      ...commonEngineProps,
+    }).outputToParent();
+  }
 
   private getCromwellBatchProps(props: ContextStackProps) {
     const commonBatchProps = this.getCommonBatchProps(props);
@@ -112,6 +134,17 @@ export class ContextStack extends Stack {
       createSpotBatch: requestSpotInstances,
       createOnDemandBatch: true,
       parent: this,
+    };
+  }
+  
+  private getToilBatchProps(props: ContextStackProps) {
+    const commonBatchProps = this.getCommonBatchProps(props);
+    const { requestSpotInstances } = props.contextParameters;
+
+    return {
+      ...commonBatchProps,
+      createSpotBatch: requestSpotInstances,
+      createOnDemandBatch: !requestSpotInstances,
     };
   }
 
