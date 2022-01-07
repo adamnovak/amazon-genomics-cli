@@ -1,4 +1,3 @@
-import { RemovalPolicy } from "aws-cdk-lib";
 import { Aws } from "aws-cdk-lib";
 import { IVpc } from "aws-cdk-lib/aws-ec2";
 import { FargateTaskDefinition, LogDriver } from "aws-cdk-lib/aws-ecs";
@@ -11,7 +10,6 @@ import { LogGroup, ILogGroup } from "aws-cdk-lib/aws-logs";
 import { EngineOutputs, EngineConstruct } from "./engine-construct";
 import { ToilEngineRole } from "../../roles/toil-engine-role";
 import { IJobQueue } from "@aws-cdk/aws-batch-alpha";
-import { wesAdapterSourcePath } from "../../constants";
 import { Construct } from "constructs";
 
 export interface ToilEngineConstructProps extends EngineOptions {
@@ -49,7 +47,7 @@ export class ToilEngineConstruct extends EngineConstruct {
     this.engine = this.getEngineServiceDefinition(props.vpc, engineContainer, this.engineLogGroup);
     // This is unused because we have no adapter, but a log group is required.
     this.adapterLogGroup = new LogGroup(this, "AdapterLogGroup");
-
+    
     // We don't use an adapter, so put the access-controlling proxy right in
     // front of the engine load balancer.
     this.apiProxy = new ApiProxy(this, {
@@ -76,7 +74,7 @@ export class ToilEngineConstruct extends EngineConstruct {
       memoryLimitMiB: serviceContainer.memoryLimitMiB,
     });
 
-    const container = definition.addContainer(serviceContainer.serviceName, {
+    definition.addContainer(serviceContainer.serviceName, {
       cpu: serviceContainer.cpu,
       memoryLimitMiB: serviceContainer.memoryLimitMiB,
       environment: serviceContainer.environment,
@@ -89,4 +87,5 @@ export class ToilEngineConstruct extends EngineConstruct {
     const engine = renderServiceWithTaskDefinition(this, id, serviceContainer, definition, vpc);
     return engine;
   }
+
 }
