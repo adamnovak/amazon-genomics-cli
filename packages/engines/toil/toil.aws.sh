@@ -10,8 +10,9 @@ printenv
 
 echo "=== START SERVER ==="
 
-# We expect some AGC info in the environment: JOB_QUEUE_ARN, AWS_REGION
+# We expect some AGC info in the environment: JOB_QUEUE_ARN 
 # These come from packages/cdk/lib/env/context-app-parameters.ts
 # If we need more we'll need to add them in the Toil engine construct, or maybe stop passing getEngineContainer() down as a parameter.
 # We assume whatever role the batch jobs get when they go in the queue is the right role for them.
-toil server --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch --opt=--awsBatchQueue=${JOB_QUEUE_ARN} --opt=--awsBatchRegion=${AWS_REGION} "$@"
+AWS_REGION=$(echo ${JOB_QUEUE_ARN} | cut -f4 -d':')
+toil server --host 0.0.0.0 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch --opt=--awsBatchQueue=${JOB_QUEUE_ARN} --opt=--awsBatchRegion=${AWS_REGION} "$@"
