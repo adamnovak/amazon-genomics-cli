@@ -38,7 +38,7 @@ export class ContextStack extends Stack {
         break;
       case "toil":
         this.renderToilStack(props);
-        break; 
+        break;
       default:
         throw Error(`Engine '${engineName}' is not supported`);
     }
@@ -96,7 +96,7 @@ export class ContextStack extends Stack {
       ...commonEngineProps,
     }).outputToParent();
   }
-  
+
   private renderToilStack(props: ContextStackProps) {
     const batchProps = this.getToilBatchProps(props);
     const batchStack = this.renderBatchStack(batchProps);
@@ -149,7 +149,7 @@ export class ContextStack extends Stack {
       parent: this,
     };
   }
-  
+
   private getToilBatchProps(props: ContextStackProps) {
     const commonBatchProps = this.getCommonBatchProps(props);
     const { requestSpotInstances } = props.contextParameters;

@@ -3,7 +3,7 @@ import { PolicyDocument, PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
 export interface ToilBatchPolicyProps {
   jobQueueArn: string;
   // This is actually a pattern that matches all ARNs for potentially relevant
-  // definitions, since Toil makes its own definitions. 
+  // definitions, since Toil makes its own definitions.
   toilJobArn: string;
 }
 
