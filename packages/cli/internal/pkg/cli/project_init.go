@@ -26,6 +26,7 @@ var (
 	workflowTypeToEngineMap = map[string]string{
 		"nextflow": "nextflow",
 		"wdl":      "cromwell",
+		"cwl":      "toil",
 	}
 	supportedWorkflowTypes []string
 )

@@ -14,11 +14,13 @@ const DefaultCromwellTag = "64"
 const DefaultNextflowTag = "21.04.3"
 const DefaultWesTag = "0.1.0"
 const DefaultMiniwdlTag = "v0.1.6"
+const DefaultToilTag = "v6.0.0"
 
 const WesImageKey = "WES"
 const CromwellImageKey = "CROMWELL"
 const NextflowImageKey = "NEXTFLOW"
 const MiniwdlImageKey = "MINIWDL"
+const ToilImageKey = "TOIL"
 
 var CommonImages = map[string]ecr.ImageReference{
 	WesImageKey: {
@@ -44,6 +46,12 @@ var CommonImages = map[string]ecr.ImageReference{
 		Region:         LookUpEnvOrDefault("ECR_MINIWDL_REGION", DefaultEcrRegion),
 		RepositoryName: "aws/miniwdl-mirror",
 		ImageTag:       LookUpEnvOrDefault("ECR_MINIWDL_TAG", DefaultMiniwdlTag),
+	},
+	ToilImageKey: {
+		RegistryId:     LookUpEnvOrDefault("ECR_TOIL_ACCOUNT_ID", DefaultEcrRegistry),
+		Region:         LookUpEnvOrDefault("ECR_TOIL_REGION", DefaultEcrRegion),
+		RepositoryName: "aws/toil-mirror",
+		ImageTag:       LookUpEnvOrDefault("ECR_TOIL_TAG", DefaultMiniwdlTag),
 	},
 }
 

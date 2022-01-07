@@ -21,6 +21,7 @@ const (
 	testCromwellRepository = "test-cromwell-repo"
 	testNextflowRepository = "test-nextflow-repo"
 	testMiniwdlRepository  = "test-miniwdl-repo"
+	testToilRepository     = "test-toil-repo"
 )
 
 var (
@@ -47,6 +48,12 @@ var (
 			RegistryId:     testAccountId,
 			Region:         testAccountRegion,
 			RepositoryName: testMiniwdlRepository,
+			ImageTag:       testImageTag,
+		},
+		"TOIL": {
+			RegistryId:     testAccountId,
+			Region:         testAccountRegion,
+			RepositoryName: testToilRepository,
 			ImageTag:       testImageTag,
 		},
 	}

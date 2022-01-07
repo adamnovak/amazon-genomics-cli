@@ -91,6 +91,11 @@ func TestProjectInit_Execute(t *testing.T) {
 			engineName:     "nextflow",
 			expectedEngine: []spec.Engine{{Type: "nextflow", Engine: "nextflow"}},
 		},
+		"toil engine generation": {
+			projectName:    testProjectName,
+			engineName:     "cwl",
+			expectedEngine: []spec.Engine{{Type: "cwl", Engine: "toil"}},
+		},
 	}
 
 	for name, tc := range testCases {
