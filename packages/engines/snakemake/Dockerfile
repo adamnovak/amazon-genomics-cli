@@ -14,8 +14,8 @@ RUN yum update -y \
     unzip \
     jq \
     which \
-    && yum clean -y all
-RUN rm -rf /var/cache/yum
+    && yum clean -y all \
+    && rm -rf /var/cache/yum
 
 RUN amazon-linux-extras install python3.8
 RUN python3.8 -m ensurepip --upgrade

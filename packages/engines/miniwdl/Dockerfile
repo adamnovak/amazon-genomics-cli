@@ -6,8 +6,8 @@ RUN yum update -y \
  && yum install -y \
     unzip \
     jq \
- && yum clean -y all
-RUN rm -rf /var/cache/yum
+ && yum clean -y all \
+ && rm -rf /var/cache/yum
 
 COPY THIRD-PARTY /opt/
 COPY LICENSE /opt/

@@ -10,8 +10,8 @@ RUN yum update -y \
     "java-11-amazon-corretto-headless(x86-64)" \
     unzip \
     jq \
-    && yum clean -y all
-RUN rm -rf /var/cache/yum
+    && yum clean -y all \
+    && rm -rf /var/cache/yum
 
 # install awscli v2
 RUN curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" \
