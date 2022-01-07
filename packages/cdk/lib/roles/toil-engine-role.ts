@@ -9,6 +9,8 @@ interface ToilEngineRoleProps {
   readOnlyBucketArns: string[];
   readWriteBucketArns: string[];
   policies: PolicyOptions;
+  // This is the queue to which we are authorizing jobs to be submitted by
+  // something with this role.
   jobQueueArn: string;
 }
 

@@ -37,6 +37,7 @@ export class ToilEngineConstruct extends EngineConstruct {
     const artifactBucket = Bucket.fromBucketName(this, "ArtifactBucket", params.artifactBucketName);
     const outputBucket = Bucket.fromBucketName(this, "OutputBucket", params.outputBucketName);
 
+    // Make a role for the server to run as
     this.engineRole = new ToilEngineRole(this, "ToilEngineRole", {
       jobQueueArn: props.jobQueue.jobQueueArn,
       readOnlyBucketArns: (params.readBucketArns ?? []).concat(artifactBucket.bucketArn),

@@ -48,6 +48,9 @@ export class ContextStack extends Stack {
     const batchProps = this.getCromwellBatchProps(props);
     const batchStack = this.renderBatchStack(batchProps);
 
+    // Cromwell submits workflow jobs to a single on-demand or spot queue. It
+    // has a server that runs elsewhere in a Fargate service, and also a WES
+    // adapter lambda.
     let jobQueue;
     if (props.contextParameters.requestSpotInstances) {
       jobQueue = batchStack.batchSpot.jobQueue;
@@ -66,6 +69,9 @@ export class ContextStack extends Stack {
     const batchProps = this.getNextflowBatchProps(props);
     const batchStack = this.renderBatchStack(batchProps);
 
+    // Nextflow submits workflow head jobs to an on demand queue, and
+    // optionally workflow jobs to a spot queue. There is no server, just an
+    // adapter lambda.
     let jobQueue, headQueue;
     if (props.contextParameters.requestSpotInstances) {
       jobQueue = batchStack.batchSpot.jobQueue;
@@ -83,6 +89,8 @@ export class ContextStack extends Stack {
   }
 
   private renderMiniwdlStack(props: ContextStackProps) {
+    // Miniwdl's engine construct takesd care of setting up its own Batch
+    // queues.
     const commonEngineProps = this.getCommonEngineProps(props);
     new MiniwdlEngineConstruct(this, "miniwdl", {
       ...commonEngineProps,
@@ -93,6 +101,9 @@ export class ContextStack extends Stack {
     const batchProps = this.getToilBatchProps(props);
     const batchStack = this.renderBatchStack(batchProps);
 
+    // Toil submits workflow jobs to a single on-demand or spot queue. It
+    // has a server that runs elsewhere in a Fargate service, and speaks WES
+    // itself.
     let jobQueue;
     if (props.contextParameters.requestSpotInstances) {
       jobQueue = batchStack.batchSpot.jobQueue;
@@ -113,6 +124,8 @@ export class ContextStack extends Stack {
 
     return {
       ...commonBatchProps,
+      // We only use one stack for the Cromwell jobs. The server lives in
+      // Fargate and doesn't run in either of these.
       createSpotBatch: requestSpotInstances,
       createOnDemandBatch: !requestSpotInstances,
     };
@@ -143,6 +156,8 @@ export class ContextStack extends Stack {
 
     return {
       ...commonBatchProps,
+      // We only use one Batch from the stack for the Toil jobs. The server
+      // lives in Fargate and doesn't run in either of these.
       createSpotBatch: requestSpotInstances,
       createOnDemandBatch: !requestSpotInstances,
     };

@@ -120,6 +120,10 @@ export class ContextAppParameters {
     return `${this.getContextBucketPath()}/${this.engineName}-execution`;
   }
 
+  /**
+   * This function defines the container that server-based engines (like Toil
+   * or Cromwell) will run their servers in. It is going to run on Fargate.
+   */
   public getEngineContainer(jobQueueArn: string): ServiceContainer {
     return {
       serviceName: this.engineName,
