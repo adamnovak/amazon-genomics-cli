@@ -42,5 +42,3 @@ RUN chmod +x /opt/bin/toil.aws.sh
 WORKDIR /opt/work
 ENTRYPOINT ["/opt/bin/toil.aws.sh"]
 
-# Actually we don't run that, we run a server
-ENTRYPOINT ["toil", "server"]
