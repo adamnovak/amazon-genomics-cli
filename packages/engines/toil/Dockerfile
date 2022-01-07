@@ -31,7 +31,8 @@ RUN yum update -y \
 
 COPY THIRD-PARTY /opt/
 ARG TOIL_VERSION="issues/3942-aws-batch-batch-system"
-RUN python3 -m pip install https://github.com/DataBiosphere/toil/archive/${TOIL_VERSION}.zip#egg=toil[aws,cwl,server]
+ARG TOIL_DOWNLOAD_NONCE="076d99707d3cf9c8fcd763e2a7fa36bbc873b8d9"
+RUN python3 -m pip install https://github.com/DataBiosphere/toil/archive/${TOIL_VERSION}.zip?${TOIL_DOWNLOAD_NONCE}#egg=toil[aws,cwl,server]
 
 # copy the entrypoint script to the image
 COPY toil.aws.sh /opt/bin/toil.aws.sh
