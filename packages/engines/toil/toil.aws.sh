@@ -15,4 +15,5 @@ echo "=== START SERVER ==="
 # If we need more we'll need to add them in the Toil engine construct, or maybe stop passing getEngineContainer() down as a parameter.
 # We assume whatever role the batch jobs get when they go in the queue is the right role for them.
 AWS_REGION=$(echo ${JOB_QUEUE_ARN} | cut -f4 -d':')
-toil server --host 0.0.0.0 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch --opt=--awsBatchQueue=${JOB_QUEUE_ARN} --opt=--awsBatchRegion=${AWS_REGION} "$@"
+set -x
+toil server --host=0.0.0.0 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch --opt=--awsBatchQueue=${JOB_QUEUE_ARN} --opt=--awsBatchRegion=${AWS_REGION} "$@"
