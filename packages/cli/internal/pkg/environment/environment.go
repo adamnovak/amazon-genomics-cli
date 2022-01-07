@@ -26,31 +26,31 @@ var CommonImages = map[string]ecr.ImageReference{
 	WesImageKey: {
 		RegistryId:     LookUpEnvOrDefault("ECR_WES_ACCOUNT_ID", DefaultEcrRegistry),
 		Region:         LookUpEnvOrDefault("ECR_WES_REGION", DefaultEcrRegion),
-		RepositoryName: "aws/wes-release",
+		RepositoryName: LookUpEnvOrDefault("ECR_WES_REPOSITORY", "aws/wes-release"),
 		ImageTag:       LookUpEnvOrDefault("ECR_WES_TAG", DefaultWesTag),
 	},
 	CromwellImageKey: {
 		RegistryId:     LookUpEnvOrDefault("ECR_CROMWELL_ACCOUNT_ID", DefaultEcrRegistry),
 		Region:         LookUpEnvOrDefault("ECR_CROMWELL_REGION", DefaultEcrRegion),
-		RepositoryName: "aws/cromwell-mirror",
+		RepositoryName: LookUpEnvOrDefault("ECR_CROMWELL_REPOSITORY", "aws/cromwell-mirror"),
 		ImageTag:       LookUpEnvOrDefault("ECR_CROMWELL_TAG", DefaultCromwellTag),
 	},
 	NextflowImageKey: {
 		RegistryId:     LookUpEnvOrDefault("ECR_NEXTFLOW_ACCOUNT_ID", DefaultEcrRegistry),
 		Region:         LookUpEnvOrDefault("ECR_NEXTFLOW_REGION", DefaultEcrRegion),
-		RepositoryName: "aws/nextflow-mirror",
+		RepositoryName: LookUpEnvOrDefault("ECR_NEXTFLOW_REPOSITORY", "aws/nextflow-mirror"),
 		ImageTag:       LookUpEnvOrDefault("ECR_NEXTFLOW_TAG", DefaultNextflowTag),
 	},
 	MiniwdlImageKey: {
 		RegistryId:     LookUpEnvOrDefault("ECR_MINIWDL_ACCOUNT_ID", DefaultEcrRegistry),
 		Region:         LookUpEnvOrDefault("ECR_MINIWDL_REGION", DefaultEcrRegion),
-		RepositoryName: "aws/miniwdl-mirror",
+		RepositoryName: LookUpEnvOrDefault("ECR_MINIWDL_REPOSITORY", "aws/miniwdl-mirror"),
 		ImageTag:       LookUpEnvOrDefault("ECR_MINIWDL_TAG", DefaultMiniwdlTag),
 	},
 	ToilImageKey: {
 		RegistryId:     LookUpEnvOrDefault("ECR_TOIL_ACCOUNT_ID", DefaultEcrRegistry),
 		Region:         LookUpEnvOrDefault("ECR_TOIL_REGION", DefaultEcrRegion),
-		RepositoryName: "aws/toil-mirror",
+		RepositoryName: LookUpEnvOrDefault("ECR_TOIL_REPOSITORY", "aws/toil-mirror"),
 		ImageTag:       LookUpEnvOrDefault("ECR_TOIL_TAG", DefaultMiniwdlTag),
 	},
 }
