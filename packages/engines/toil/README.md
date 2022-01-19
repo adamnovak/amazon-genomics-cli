@@ -35,3 +35,14 @@ For debugging, you can get inside the container with:
 ```bash
 docker exec -ti "$(docker ps | grep adamnovak/toil-agc | rev | cut -f1 -d' ' | rev)" /bin/bash
 ```
+
+### Deploying
+
+To push this to an Amazon ECR repo, where AGC can get at it, you can do something like:
+
+```bash
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 318423852362.dkr.ecr.us-west-2.amazonaws.com
+docker build -t adamnovak/toil-agc .
+docker tag adamnovak/toil-agc:latest 318423852362.dkr.ecr.us-west-2.amazonaws.com/adamnovak/toil-agc:latest
+docker push 318423852362.dkr.ecr.us-west-2.amazonaws.com/adamnovak/toil-agc:latest
+```
