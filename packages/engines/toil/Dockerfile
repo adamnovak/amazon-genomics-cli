@@ -35,8 +35,6 @@ RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - \
     python3 \
     rabbitmq-server \
     nodejs \
-    net-tools \
-    nc \
     && yum clean -y all \
     && rm -rf /var/cache/yum
 
@@ -53,7 +51,7 @@ RUN python3 -m pip install https://github.com/DataBiosphere/toil/archive/${TOIL_
 COPY toil.aws.sh /opt/bin/toil.aws.sh
 RUN chmod +x /opt/bin/toil.aws.sh
 
-#EXPOSE 8000
+EXPOSE 8000
 
 #### END MODIFY ######
 

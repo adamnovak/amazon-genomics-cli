@@ -15,7 +15,7 @@ docker build . -f Dockerfile -t adamnovak/toil-agc
 Having built the container, run:
 
 ```bash
-docker run -ti --rm -p "127.0.0.1:8000:8001" adamnovak/toil-agc
+docker run -ti --rm -p "127.0.0.1:8000:8000" adamnovak/toil-agc
 ```
 
 This will start the containerized server and make it available on port 8000 on the loopback interface. You can inspect the port mapping with:
