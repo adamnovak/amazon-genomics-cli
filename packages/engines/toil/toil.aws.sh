@@ -16,4 +16,13 @@ echo "=== START SERVER ==="
 # We assume whatever role the batch jobs get when they go in the queue is the right role for them.
 AWS_REGION=$(echo ${JOB_QUEUE_ARN} | cut -f4 -d':')
 set -x
-toil server --host=0.0.0.0 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch --opt=--awsBatchQueue=${JOB_QUEUE_ARN} --opt=--awsBatchRegion=${AWS_REGION} "$@"
+
+export TOIL_WES_BROKER_URL="amqp://guest:guest@localhost:5672//"
+
+concurrently -n rabbitmq,celery,toil,nc \
+    "rabbitmq-server" \
+    "celery --broker=${TOIL_WES_BROKER_URL} -A toil.server.celery_app worker --loglevel=INFO" \
+    "toil server --debug --host=127.0.0.1 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch '--opt=--awsBatchQueue=${JOB_QUEUE_ARN}' '--opt=--awsBatchRegion=${AWS_REGION}'" \
+    "nc -v -l -k 8001"
+
+

@@ -23,20 +23,37 @@ RUN curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/
 ## In this area install your new engine into the container as well as any requirements for that engine.
 ## Dockerfile documentation is found here: https://docs.docker.com/engine/reference/builder/
 
-RUN yum update -y \
+# Add rabbitmq repository
+ADD rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
+
+# Sadly pre-importing keys doesn't seem to save any time whan we use yum later, so don't so it.
+
+# Install deps
+RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - \
+    && yum update -y \
     && yum install -y \
     python3 \
+    rabbitmq-server \
+    nodejs \
+    net-tools \
+    nc \
     && yum clean -y all \
     && rm -rf /var/cache/yum
 
+# Install concurrently, for running all our servers in one session
+RUN npm install -g concurrently@7.0.0
+
+# Install Toil
 COPY THIRD-PARTY /opt/
-ARG TOIL_VERSION="issues/3942-aws-batch-batch-system"
-ARG TOIL_DOWNLOAD_NONCE="076d99707d3cf9c8fcd763e2a7fa36bbc873b8d9"
+ARG TOIL_VERSION="issues/3904-agc-integration"
+ARG TOIL_DOWNLOAD_NONCE="3e3c7a30261ce6d8a881e4e76c3c3ee646a15dd0"
 RUN python3 -m pip install https://github.com/DataBiosphere/toil/archive/${TOIL_VERSION}.zip?${TOIL_DOWNLOAD_NONCE}#egg=toil[aws,cwl,server]
 
 # copy the entrypoint script to the image
 COPY toil.aws.sh /opt/bin/toil.aws.sh
 RUN chmod +x /opt/bin/toil.aws.sh
+
+#EXPOSE 8000
 
 #### END MODIFY ######
 
