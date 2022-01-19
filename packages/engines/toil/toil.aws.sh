@@ -22,6 +22,6 @@ export TOIL_WES_BROKER_URL="amqp://guest:guest@localhost:5672//"
 concurrently -n rabbitmq,celery,toil \
     "rabbitmq-server" \
     "celery --broker=${TOIL_WES_BROKER_URL} -A toil.server.celery_app worker --loglevel=INFO" \
-    "toil server --debug --host=127.0.0.1 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch '--opt=--awsBatchQueue=${JOB_QUEUE_ARN}' '--opt=--awsBatchRegion=${AWS_REGION}'"
+    "toil server --debug --host=0.0.0.0 --port=8000 --opt=--batchSystem=aws_batch --opt=--batchSystem=aws_batch '--opt=--awsBatchQueue=${JOB_QUEUE_ARN}' '--opt=--awsBatchRegion=${AWS_REGION}'"
 
 
