@@ -240,6 +240,9 @@ func (m *Manager) uploadWorkflowToS3() {
 		return
 	}
 	m.err = m.S3.UploadFile(m.bucketName, m.objectKey, m.packPath)
+	if m.err != nil {
+		m.err = fmt.Errorf("unable to upload s3://%s/%s: %w", m.bucketName, m.objectKey, m.err)
+	}
 }
 
 func (m *Manager) readInput(inputUrl string) {
@@ -301,7 +304,7 @@ func (m *Manager) uploadInputFileToS3(inputKey inputKey, fileUrl inputUrl) input
 	}
 	err = m.S3.SyncFile(m.bucketName, objectKey, absFileUrl)
 	if err != nil {
-		m.err = err
+		m.err = fmt.Errorf("unable to sync s3://%s/%s: %w", m.bucketName, objectKey, err)
 		return fileUrl
 	}
 	return fmt.Sprintf("s3://%s/%s", m.bucketName, objectKey)
@@ -405,6 +408,9 @@ func (m *Manager) setWesClient() {
 		return
 	}
 	m.wes, m.err = m.WesFactory(m.wesUrl)
+	if m.err != nil {
+		m.err = fmt.Errorf("unable to configure WES endpoint: %w", m.err)
+	}
 }
 
 func (m *Manager) saveAttachments() {

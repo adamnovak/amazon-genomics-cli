@@ -334,6 +334,7 @@ func (s *WorkflowRunTestSuite) TestRunWorkflow_UploadToS3Failed() {
 	s.mockConfigClient.EXPECT().GetUserId().Return(testUserId, nil)
 	s.mockCfn.EXPECT().GetStackStatus(testContext1Stack).Return(types.StackStatusCreateComplete, nil)
 	errorMessage := "cannot upload to S3"
+	expectedInfix := "unable to upload s3://TestOutputBucket/project/TestProject1/userid/bender123/context/TestContext1/workflow/TestLocalWorkflowName1/workflow.zip: "
 	s.mockProjectClient.EXPECT().Read().Return(s.testProjSpec, nil)
 	s.mockProjectClient.EXPECT().GetLocation().Return(testProjectFileDir)
 	s.mockZip.EXPECT().CompressToTmp(s.localWorkflowAbsPath).Return(testCompressedTmpPath, nil)
@@ -343,7 +344,7 @@ func (s *WorkflowRunTestSuite) TestRunWorkflow_UploadToS3Failed() {
 
 	actualId, err := s.manager.RunWorkflow(testContext1Name, testLocalWorkflowName, "")
 	if s.Assert().Error(err) {
-		s.Assert().EqualError(err, testErrorPrefix+errorMessage)
+		s.Assert().EqualError(err, testErrorPrefix+expectedInfix+errorMessage)
 		s.Assert().Empty(actualId)
 	}
 }
@@ -371,6 +372,7 @@ func (s *WorkflowRunTestSuite) TestRunWorkflow_UploadInputFailed() {
 	s.mockConfigClient.EXPECT().GetUserId().Return(testUserId, nil)
 	s.mockCfn.EXPECT().GetStackStatus(testContext1Stack).Return(types.StackStatusCreateComplete, nil)
 	errorMessage := "cannot upload input"
+	expectedInfix := "unable to sync s3://TestOutputBucket/project/TestProject1/userid/bender123/data/Workflow.variable/data.txt: "
 	s.mockProjectClient.EXPECT().Read().Return(s.testProjSpec, nil)
 	s.mockProjectClient.EXPECT().GetLocation().Return(testProjectFileDir)
 	s.mockZip.EXPECT().CompressToTmp(s.localWorkflowAbsPath).Return(testCompressedTmpPath, nil)
@@ -382,7 +384,7 @@ func (s *WorkflowRunTestSuite) TestRunWorkflow_UploadInputFailed() {
 
 	actualId, err := s.manager.RunWorkflow(testContext1Name, testLocalWorkflowName, testArgumentsPath)
 	if s.Assert().Error(err) {
-		s.Assert().EqualError(err, testErrorPrefix+errorMessage)
+		s.Assert().EqualError(err, testErrorPrefix+expectedInfix+errorMessage)
 		s.Assert().Empty(actualId)
 	}
 }
