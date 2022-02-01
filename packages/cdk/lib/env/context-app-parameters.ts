@@ -116,8 +116,8 @@ export class ContextAppParameters {
 
     this.agcVersion = getEnvString(node, "AGC_VERSION");
 
-    const tagsJson = getEnvString(node, "CUSTOM_TAGS");
-    this.customTags = JSON.parse(tagsJson);
+    const tagsJson = getEnvStringOrDefault(node, "CUSTOM_TAGS");
+    this.customTags = tagsJson ? JSON.parse(tagsJson) : {};
   }
 
   public getContextBucketPath(): string {
