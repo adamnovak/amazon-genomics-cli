@@ -18,6 +18,7 @@ AWS_REGION=$(echo ${JOB_QUEUE_ARN} | cut -f4 -d':')
 set -x
 
 export TOIL_WES_BROKER_URL="amqp://guest:guest@localhost:5672//"
+export TOIL_WES_JOB_STORE_TYPE="aws"
 
 concurrently -n rabbitmq,celery,toil \
     "rabbitmq-server" \
