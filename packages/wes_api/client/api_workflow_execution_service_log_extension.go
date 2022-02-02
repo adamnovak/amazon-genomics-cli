@@ -10,9 +10,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"fmt"
-	"os"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -45,11 +43,11 @@ func (a *WorkflowExecutionServiceApiService) GetRunLogData(ctx _context.Context,
     if err != nil {
         return localVarReturnValue, nil, err
     }
-	evaluated, err = base.Parse(dataUrl)
+	evaluated, err := base.Parse(dataUrl)
 	if err != nil {
         return localVarReturnValue, nil, err
     }
-	if (evaluated.Scheme != base.Scheme && !evaluated.Scheme.HasPrefix("http")) {
+	if (evaluated.Scheme != base.Scheme && !strings.HasPrefix(evaluated.Scheme, "http")) {
 		// This doesn't look like something we can fetch
 		return localVarReturnValue, nil, fmt.Errorf("WES cannot be used to retrieve %s", dataUrl)
 	}
@@ -140,7 +138,8 @@ func (a *WorkflowExecutionServiceApiService) GetRunLogData(ctx _context.Context,
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	localVarReturnValue = localVarBody
+	// TODO: Handle odd encodings, unacceptable UTF-8, etc. somehow.
+	localVarReturnValue = string(localVarBody)
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
