@@ -44,7 +44,7 @@ RUN npm install -g concurrently@7.0.0
 # Install Toil
 COPY THIRD-PARTY /opt/
 ARG TOIL_VERSION="issues/3904-agc-integration"
-ARG TOIL_DOWNLOAD_NONCE="1da61fe3b4eb43c728aeb8e0d356b71f768bb58e"
+ARG TOIL_DOWNLOAD_NONCE="50648cd3d32f3ea951775dca2fa5c61c30df573e"
 RUN python3 -m pip install https://github.com/DataBiosphere/toil/archive/${TOIL_VERSION}.zip?${TOIL_DOWNLOAD_NONCE}#egg=toil[aws,cwl,server]
 
 # copy the entrypoint script to the image
