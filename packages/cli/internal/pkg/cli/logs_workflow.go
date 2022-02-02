@@ -143,6 +143,12 @@ func printRunLog(runLog workflow.RunLog) {
 		taskTable = strings.ReplaceAll(b.String(), "\n", "\n\t")
 	}
 	printLn(fmt.Sprintf("RunId: %s\nState: %s\nTasks: %s", runLog.RunId, runLog.State, taskTable))
+	if len(runLog.Stdout) > 0 {
+		printLn(fmt.Sprintf("Run Standard Output:\n%s", runLog.Stdout))
+	}
+	if len(runLog.Stderr) > 0 {
+		printLn(fmt.Sprintf("Run Standard Error:\n%s", runLog.Stderr))
+	}
 }
 
 func containsTaskId(taskId string, tasks []workflow.Task) bool {
