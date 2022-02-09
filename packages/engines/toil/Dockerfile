@@ -35,6 +35,7 @@ RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - \
     python3 \
     rabbitmq-server \
     nodejs \
+    git \
     && yum clean -y all \
     && rm -rf /var/cache/yum
 
@@ -43,9 +44,9 @@ RUN npm install -g concurrently@7.0.0
 
 # Install Toil
 COPY THIRD-PARTY /opt/
-ARG TOIL_VERSION="issues/3904-agc-integration"
-ARG TOIL_DOWNLOAD_NONCE="3e3c7a30261ce6d8a881e4e76c3c3ee646a15dd0"
-RUN python3 -m pip install https://github.com/DataBiosphere/toil/archive/${TOIL_VERSION}.zip?${TOIL_DOWNLOAD_NONCE}#egg=toil[aws,cwl,server]
+
+ARG TOIL_VERSION="e9a82098629046f672aaee4c5f14f46bc67be4ce"
+RUN python3 -m pip install git+https://github.com/DataBiosphere/toil.git@${TOIL_VERSION}#egg=toil[aws,cwl,server]
 
 # copy the entrypoint script to the image
 COPY toil.aws.sh /opt/bin/toil.aws.sh
