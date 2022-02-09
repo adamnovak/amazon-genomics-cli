@@ -31,7 +31,6 @@ export class ToilEngineConstruct extends EngineConstruct {
     super(scope, id);
     const params = props.contextParameters;
     this.engineLogGroup = new LogGroup(this, "EngineLogGroup");
-    const engineContainer = params.getEngineContainer(props.jobQueue.jobQueueArn);
     const artifactBucket = Bucket.fromBucketName(this, "ArtifactBucket", params.artifactBucketName);
     const outputBucket = Bucket.fromBucketName(this, "OutputBucket", params.outputBucketName);
 
@@ -41,6 +40,12 @@ export class ToilEngineConstruct extends EngineConstruct {
       readOnlyBucketArns: (params.readBucketArns ?? []).concat(artifactBucket.bucketArn),
       readWriteBucketArns: (params.readWriteBucketArns ?? []).concat(outputBucket.bucketArn),
       policies: props.policyOptions,
+    });
+
+    // Make the container and pass it the role to use for tasks also.
+    // TODO: How do we get another role for tasks? What is e.g. Cromwell running tasks as?
+    const engineContainer = params.getEngineContainer(props.jobQueue.jobQueueArn, {
+      TOIL_AWS_BATCH_JOB_ROLE_ARN: this.engineRole.role_arn,
     });
 
     // TODO: Move log group creation into service construct and make it a property
