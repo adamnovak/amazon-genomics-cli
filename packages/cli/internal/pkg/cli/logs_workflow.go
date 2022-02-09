@@ -104,11 +104,30 @@ func (o *logsWorkflowOpts) Execute() error {
 		}
 	} else {
 		printRunLog(runLog)
+		// Go and fetch the run-level log text if available
+		if len(runLog.Stdout) > 0 {
+			logData, err := o.workflowManager.GetRunLogData(o.runId, runLog.Stdout)
+			if err != nil {
+				log.Error().Msgf("Could not retrieve standard output from %s: %v", runLog.Stdout, err)
+			} else {
+				printLn("Run Standard Output:")
+				printLn(logData)
+			}
+		}
+		if len(runLog.Stderr) > 0 {
+			logData, err := o.workflowManager.GetRunLogData(o.runId, runLog.Stderr)
+			if err != nil {
+				log.Error().Msgf("Could not retrieve standard error from %s: %v", runLog.Stderr, err)
+			} else {
+				printLn("Run Standard Error:")
+				printLn(logData)
+			}
+		}
 		return nil
 	}
 
 	if len(jobIds) == 0 {
-		log.Info().Msgf("No logs available for run '%s'. Please try again later.", o.runId)
+		log.Info().Msgf("No job logs available for run '%s'. Please try again later.", o.runId)
 		return nil
 	}
 	notCachedJobIds := filterCachedJobIds(jobIds)
@@ -183,7 +202,7 @@ func (o *logsWorkflowOpts) getJobIds(tasks []workflow.Task) ([]string, error) {
 
 	var jobIds []string
 	for _, task := range tasks {
-		if o.failedTasks && task.ExitCode == 0 {
+		if o.failedTasks && task.ExitCode == "0" {
 			log.Debug().Msgf("skipping successful task '%s' ('%s')", task.Name, task.JobId)
 			continue
 		}

@@ -27,6 +27,7 @@ var (
 // WorkflowExecutionServiceApiService WorkflowExecutionServiceApi service
 type WorkflowExecutionServiceApiService service
 
+
 /*
 CancelRun Cancel a running workflow.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -784,3 +785,5 @@ func (a *WorkflowExecutionServiceApiService) RunWorkflow(ctx _context.Context, l
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+
+

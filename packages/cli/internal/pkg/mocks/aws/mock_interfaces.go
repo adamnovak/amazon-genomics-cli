@@ -56,6 +56,21 @@ func (mr *MockCdkClientMockRecorder) ClearContext(appDir interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ClearContext", reflect.TypeOf((*MockCdkClient)(nil).ClearContext), appDir)
 }
 
+// Bootstrap mocks base method.
+func (m *MockCdkClient) Bootstrap(appDir string, context []string, executionName string) (cdk.ProgressStream, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Bootstrap", appDir, context, executionName)
+	ret0, _ := ret[0].(cdk.ProgressStream)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Bootstrap indicates an expected call of Bootstrap.
+func (mr *MockCdkClientMockRecorder) Bootstrap(appDir, context, executionName interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bootstrap", reflect.TypeOf((*MockCdkClient)(nil).Bootstrap), appDir, context, executionName)
+}
+
 // DeployApp mocks base method.
 func (m *MockCdkClient) DeployApp(appDir string, context []string, executionName string) (cdk.ProgressStream, error) {
 	m.ctrl.T.Helper()
@@ -269,6 +284,20 @@ func (m *MockSsmClient) GetOutputBucket() (string, error) {
 func (mr *MockSsmClientMockRecorder) GetOutputBucket() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOutputBucket", reflect.TypeOf((*MockSsmClient)(nil).GetOutputBucket))
+}
+
+// GetCustomTags mocks base method.
+func (m *MockSsmClient) GetCustomTags() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCustomTags")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetCustomTags indicates an expected call of GetOutputBucket.
+func (mr *MockSsmClientMockRecorder) GetCustomTags() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCustomTags", reflect.TypeOf((*MockSsmClient)(nil).GetCustomTags))
 }
 
 // MockCfnClient is a mock of CfnClient interface.

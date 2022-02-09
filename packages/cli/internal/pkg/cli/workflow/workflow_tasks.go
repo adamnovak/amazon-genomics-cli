@@ -14,12 +14,14 @@ type Task struct {
 	JobId     string
 	StartTime *time.Time
 	StopTime  *time.Time
-	ExitCode  int
+	ExitCode  string
 }
 
 type RunLog struct {
 	RunId string
 	State string
+	Stdout string
+	Stderr string
 	Tasks []Task
 }
 
@@ -51,8 +53,22 @@ func (m *Manager) GetRunLog(runId string) (RunLog, error) {
 	return RunLog{
 		RunId: m.taskProps.runLog.RunId,
 		State: string(m.taskProps.runLog.State),
+		Stdout: m.taskProps.runLog.RunLog.Stdout,
+		Stderr: m.taskProps.runLog.RunLog.Stderr,
 		Tasks: tasks,
 	}, nil
+}
+
+func (m *Manager) GetRunLogData(runId string, dataUrl string) (string, error) {
+	if m.err != nil {
+		return "", m.err
+	}
+	var data string
+	data, m.err = m.wes.GetRunLogData(context.Background(), runId, dataUrl)
+	if m.err != nil {
+		return "", m.err
+	}
+	return data, nil
 }
 
 func (m *Manager) setContextForRun(runId string) {
@@ -72,6 +88,7 @@ func (m *Manager) getRunLog(runId string) {
 		return
 	}
 	m.runLog, m.err = m.wes.GetRunLog(context.Background(), runId)
+	log.Debug().Msgf("Obtained log: %v", m.runLog)
 }
 
 func (m *Manager) getTasks() ([]Task, error) {
@@ -90,7 +107,7 @@ func (m *Manager) getTasks() ([]Task, error) {
 			JobId:     nameParts[1],
 			StartTime: parseLogTime(taskLog.StartTime),
 			StopTime:  parseLogTime(taskLog.EndTime),
-			ExitCode:  int(taskLog.ExitCode),
+			ExitCode:  taskLog.ExitCode,
 		}
 	}
 

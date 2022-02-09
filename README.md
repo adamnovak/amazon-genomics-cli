@@ -20,6 +20,8 @@ For full documentation, please refer to our [docs](https://aws.github.io/amazon-
 
 All releases can be accessed on our releases [page](https://github.com/aws/amazon-genomics-cli/releases).
 
+The latest nightly build can be accessed here: `s3://healthai-public-assets-us-east-1/amazon-genomics-cli/nightly-build/amazon-genomics-cli.zip`
+
 ## Development
 
 To build from source you will need to ensure the following prerequisites are met.
@@ -86,6 +88,8 @@ Once you've installed all the dependencies listed here, run `make init` to autom
 #### Make
 
 We use `make` to build, test and deploy artifacts. To build and test issue the `make` command from the project root.
+
+If you're experiencing build issues, try running `go clean --cache` in the project root to clean up your local go build cache. Then try to run `make init` then `make` again. This should ideally resolve it.
 
 ### Running Development Code
 

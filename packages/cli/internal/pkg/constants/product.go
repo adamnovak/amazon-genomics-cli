@@ -1,5 +1,8 @@
 package constants
 
 const (
-	ProductName = "Agc"
+	ProductName   = "Agc"
+	AppTagKey     = "application-name"
+	AppTagValue   = "agc"
+	AgcVersionKey = "agc-version"
 )
