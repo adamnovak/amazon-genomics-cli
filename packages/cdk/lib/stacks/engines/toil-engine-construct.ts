@@ -45,7 +45,7 @@ export class ToilEngineConstruct extends EngineConstruct {
     // Make the container and pass it the role to use for tasks also.
     // TODO: How do we get another role for tasks? What is e.g. Cromwell running tasks as?
     const engineContainer = params.getEngineContainer(props.jobQueue.jobQueueArn, {
-      TOIL_AWS_BATCH_JOB_ROLE_ARN: this.engineRole.role_arn,
+      TOIL_AWS_BATCH_JOB_ROLE_ARN: this.engineRole.roleArn,
     });
 
     // TODO: Move log group creation into service construct and make it a property
