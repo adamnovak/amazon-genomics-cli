@@ -1,10 +1,8 @@
-import { PolicyOptions } from "../types/engine-options";
-import { BucketOperations } from "../common/BucketOperations";
 import { ToilBatchPolicy } from "./policies/toil-batch-policy";
 import { ToilJobRole } from "./toil-job-role";
 import { Arn, Aws, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
+import { PolicyDocument, PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
 
 interface ToilEngineRoleProps extends ToilJobRoleProps {
   // This is the queue to which we are authorizing jobs to be submitted by
