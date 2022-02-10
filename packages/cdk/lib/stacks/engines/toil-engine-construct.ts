@@ -8,6 +8,7 @@ import { Bucket } from "aws-cdk-lib/aws-s3";
 import { EngineOptions, ServiceContainer } from "../../types";
 import { LogGroup, ILogGroup } from "aws-cdk-lib/aws-logs";
 import { EngineOutputs, EngineConstruct } from "./engine-construct";
+import { ToilJobRole } from "../../roles/toil-job-role";
 import { ToilEngineRole } from "../../roles/toil-engine-role";
 import { IJobQueue } from "@aws-cdk/aws-batch-alpha";
 import { Construct } from "constructs";
@@ -26,6 +27,7 @@ export class ToilEngineConstruct extends EngineConstruct {
   public readonly adapterLogGroup: ILogGroup;
   public readonly engineLogGroup: ILogGroup;
   public readonly engineRole: IRole;
+  public readonly jobRole: IRole;
 
   constructor(scope: Construct, id: string, props: ToilEngineConstructProps) {
     super(scope, id);
@@ -34,18 +36,25 @@ export class ToilEngineConstruct extends EngineConstruct {
     const artifactBucket = Bucket.fromBucketName(this, "ArtifactBucket", params.artifactBucketName);
     const outputBucket = Bucket.fromBucketName(this, "OutputBucket", params.outputBucketName);
 
+    // Make a role for the jobs to run as
+    this.jobRole = new ToilJobRole(this, "ToilJobRole", {
+      readOnlyBucketArns: (params.readBucketArns ?? []).concat(artifactBucket.bucketArn),
+      readWriteBucketArns: (params.readWriteBucketArns ?? []).concat(outputBucket.bucketArn),
+      policies: props.policyOptions,
+    });
+    
     // Make a role for the server to run as
     this.engineRole = new ToilEngineRole(this, "ToilEngineRole", {
       jobQueueArn: props.jobQueue.jobQueueArn,
+      jobRoleArn: this.jobRole.roleArn,
       readOnlyBucketArns: (params.readBucketArns ?? []).concat(artifactBucket.bucketArn),
       readWriteBucketArns: (params.readWriteBucketArns ?? []).concat(outputBucket.bucketArn),
       policies: props.policyOptions,
     });
 
-    // Make the container and pass it the role to use for tasks also.
-    // TODO: How do we get another role for tasks? What is e.g. Cromwell running tasks as?
+    // Make the container and pass it the ARN of the role to use for individual jobs.
     const engineContainer = params.getEngineContainer(props.jobQueue.jobQueueArn, {
-      TOIL_AWS_BATCH_JOB_ROLE_ARN: this.engineRole.roleArn,
+      TOIL_AWS_BATCH_JOB_ROLE_ARN: this.jobRole.roleArn,
     });
 
     // TODO: Move log group creation into service construct and make it a property

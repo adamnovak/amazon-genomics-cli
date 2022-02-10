@@ -1,20 +1,22 @@
 import { PolicyOptions } from "../types/engine-options";
 import { BucketOperations } from "../common/BucketOperations";
 import { ToilBatchPolicy } from "./policies/toil-batch-policy";
+import { ToilJobRole } from "./toil-job-role";
 import { Arn, Aws, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
 
-interface ToilEngineRoleProps {
-  readOnlyBucketArns: string[];
-  readWriteBucketArns: string[];
-  policies: PolicyOptions;
+interface ToilEngineRoleProps extends ToilJobRoleProps {
   // This is the queue to which we are authorizing jobs to be submitted by
   // something with this role.
   jobQueueArn: string;
+  // And this other role can be assigned by this role
+  jobRoleArn: string;
 }
 
-export class ToilEngineRole extends Role {
+// This role grants access to Toil job stores, but also the access needed to
+// launch jobs on AWS Batch that themselves have a ToilJobRole role assigned. 
+export class ToilEngineRole extends ToilJobRole {
   constructor(scope: Construct, id: string, props: ToilEngineRoleProps) {
     const toilJobArn = Arn.format(
       {
@@ -26,51 +28,32 @@ export class ToilEngineRole extends Role {
       },
       scope as Stack
     );
-    super(scope, id, {
-      assumedBy: new ServicePrincipal("ecs-tasks.amazonaws.com"),
-      inlinePolicies: {
-        ToilEngineBatchPolicy: new ToilBatchPolicy({
-          ...props,
-          toilJobArn: toilJobArn,
-        }),
-        ToilEcsDescribeInstances: new PolicyDocument({
-          assignSids: true,
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: ["ecs:DescribeContainerInstances", "s3:ListAllMyBuckets"],
-              resources: ["*"],
-            }),
-          ],
-        }),
-        // TODO: Remove this when Toil no longer uses its own SimpleDB domains
-        ToilSimpleDBFullAccess: new PolicyDocument({
-          assignSids: true,
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: ["sdb:*"],
-              resources: ["*"],
-            }),
-          ],
-        }),
-        // TODO: Remove this when Toil is taught to use AGC buckets to store
-        // its workflow state and doesn't need to make and destroy its own.
-        ToilS3FullAccess: new PolicyDocument({
-          assignSids: true,
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: ["s3:*"],
-              resources: ["*"],
-            }),
-          ],
-        }),
-      },
-      ...props.policies,
+    super(scope, id, props, {
+      ToilEngineBatchPolicy: new ToilBatchPolicy({
+        ...props,
+        toilJobArn: toilJobArn,
+      }),
+      // TODO: Can we restrict this to allow passing the role only to jobs?
+      ToilIamPassJobRole: new PolicyDocument({
+        assignSids: true,
+        statements: [
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["iam:PassRole"],
+            resources: [props.jobRoleArn],
+          }),
+        ],
+      }),
+      ToilEcsDescribeInstances: new PolicyDocument({
+        assignSids: true,
+        statements: [
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["ecs:DescribeContainerInstances", "s3:ListAllMyBuckets"],
+            resources: ["*"],
+          }),
+        ],
+      }),
     });
-
-    BucketOperations.grantBucketAccess(this, this, props.readOnlyBucketArns, true);
-    BucketOperations.grantBucketAccess(this, this, props.readWriteBucketArns);
   }
 }
