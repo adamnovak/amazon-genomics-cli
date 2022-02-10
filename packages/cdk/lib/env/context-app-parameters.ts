@@ -144,7 +144,7 @@ export class ContextAppParameters {
         S3BUCKET: this.outputBucketName,
         ROOT_DIR: this.getEngineBucketPath(),
         JOB_QUEUE_ARN: jobQueueArn,
-        ...additionalEnvVars
+        ...additionalEnvVars,
       },
     };
   }

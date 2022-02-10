@@ -5,7 +5,7 @@ import { Arn, Aws, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
 
-interface ToilJobRoleProps {
+export interface ToilJobRoleProps {
   readOnlyBucketArns: string[];
   readWriteBucketArns: string[];
   policies: PolicyOptions;
@@ -14,7 +14,7 @@ interface ToilJobRoleProps {
 // This role grants access to everything a Toil job needs to talk to the AWS
 // job store and/or additional user data in S3.
 export class ToilJobRole extends Role {
-  constructor(scope: Construct, id: string, props: ToilJobRoleProps, additionalInlinePolicies:  { [key: string]: PolicyDocument }) {
+  constructor(scope: Construct, id: string, props: ToilJobRoleProps, additionalInlinePolicies?:  { [key: string]: PolicyDocument }) {
     super(scope, id, {
       assumedBy: new ServicePrincipal("ecs-tasks.amazonaws.com"),
       inlinePolicies: {

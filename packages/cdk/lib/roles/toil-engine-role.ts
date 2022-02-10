@@ -15,7 +15,7 @@ interface ToilEngineRoleProps extends ToilJobRoleProps {
 }
 
 // This role grants access to Toil job stores, but also the access needed to
-// launch jobs on AWS Batch that themselves have a ToilJobRole role assigned. 
+// launch jobs on AWS Batch that themselves have a ToilJobRole role assigned.
 export class ToilEngineRole extends ToilJobRole {
   constructor(scope: Construct, id: string, props: ToilEngineRoleProps) {
     const toilJobArn = Arn.format(

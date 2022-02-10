@@ -42,7 +42,7 @@ export class ToilEngineConstruct extends EngineConstruct {
       readWriteBucketArns: (params.readWriteBucketArns ?? []).concat(outputBucket.bucketArn),
       policies: props.policyOptions,
     });
-    
+
     // Make a role for the server to run as
     this.engineRole = new ToilEngineRole(this, "ToilEngineRole", {
       jobQueueArn: props.jobQueue.jobQueueArn,
