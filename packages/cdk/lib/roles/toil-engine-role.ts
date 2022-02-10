@@ -1,5 +1,5 @@
 import { ToilBatchPolicy } from "./policies/toil-batch-policy";
-import { ToilJobRole } from "./toil-job-role";
+import { ToilJobRole, ToilJobRoleProps } from "./toil-job-role";
 import { Arn, Aws, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { PolicyDocument, PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
