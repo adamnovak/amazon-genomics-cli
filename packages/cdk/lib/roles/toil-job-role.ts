@@ -12,7 +12,7 @@ export interface ToilJobRoleProps {
 // This role grants access to everything a Toil job needs to talk to the AWS
 // job store and/or additional user data in S3.
 export class ToilJobRole extends Role {
-  constructor(scope: Construct, id: string, props: ToilJobRoleProps, additionalInlinePolicies?:  { [key: string]: PolicyDocument }) {
+  constructor(scope: Construct, id: string, props: ToilJobRoleProps, additionalInlinePolicies?: { [key: string]: PolicyDocument }) {
     super(scope, id, {
       assumedBy: new ServicePrincipal("ecs-tasks.amazonaws.com"),
       inlinePolicies: {
