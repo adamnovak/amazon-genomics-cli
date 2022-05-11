@@ -28,7 +28,8 @@ steps:
   
   resize_from_directory:
     run: shrink-image.cwl
-    in: fetch_from_directory/file
+    in:
+      input_image: fetch_from_directory/file
     out: [output_image]
 
 outputs:
