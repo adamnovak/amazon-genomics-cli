@@ -1,7 +1,0 @@
-{
-    "image_file": {"class": "File", "location": "s3://toil-datasets/images/logos/toil-logo-draft.png"},
-    "image_directory": {"class": "Directory", "location": "s3://toil-datasets/images/logos/"},
-    "image_parent_directory": {"class": "Directory", "location": "s3://toil-datasets/images/"},
-    "image_subdirname": "logos",
-    "image_filename": "toil-logo-draft.png"
-}
