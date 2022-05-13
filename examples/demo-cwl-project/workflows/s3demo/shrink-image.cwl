@@ -3,7 +3,10 @@ cwlVersion: v1.2
 class: CommandLineTool
 hints:
   DockerRequirement:
-    dockerPull: dpokidov/imagemagick:7.1.0-29-ubuntu
+    # Make sure to use a Docker image without an ENTRYPOINT, or it will behave
+    # differently depending on if you pass --singularity to your CWL runner or
+    # not.
+    dockerPull: v4tech/imagemagick
   ResourceRequirement:
     coresMin: 2
     coresMax: 1
@@ -21,7 +24,7 @@ outputs:
     type: File
     outputBinding:
       glob: output.jpg
-baseCommand: "convert"
+baseCommand: convert
 arguments:
     - position: 2
       valueFrom: "-resize"

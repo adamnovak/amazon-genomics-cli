@@ -3,6 +3,8 @@ cwlVersion: v1.2
 class: ExpressionTool
 requirements:
   InlineJavascriptRequirement: {}
+  LoadListingRequirement:
+    loadListing: shallow_listing
 inputs:
   dir:
     type: Directory
