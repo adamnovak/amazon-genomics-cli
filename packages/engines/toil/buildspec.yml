@@ -5,7 +5,7 @@ env:
   variables:
     TOIL_IMAGE_NAME: "toil"
     TOIL_VERSION_PREFIX: "5.7.0a1-"
-    TOIL_VERSION: "f77554b28bbda7b112c5b058b31d5041299c38c9"
+    TOIL_VERSION: "1eb6af23fb70a7efa8b04d48db257de196a8ad43"
 phases:
   pre_build:
     commands:

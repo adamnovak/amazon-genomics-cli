@@ -6,7 +6,7 @@ hints:
     # Make sure to use a Docker image without an ENTRYPOINT, or it will behave
     # differently depending on if you pass --singularity to your CWL runner or
     # not.
-    dockerPull: v4tech/imagemagick
+    dockerPull: oittaa/imagemagick
   ResourceRequirement:
     coresMin: 2
     coresMax: 1

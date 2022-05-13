@@ -44,8 +44,9 @@ To push this to an Amazon ECR repo, where AGC can get at it, you can do somethin
 AWS_REGION=<your-deployment-region> # For example, us-west-2
 AWS_ACCOUNT=<your-account-number> # For example, 123456789012
 ECR_REPO=<your-ecr-repo> # For example, yourname/toil-agc. Needs to be created in the ECR console.
+TOIL_VERSION=<version to build> # For example, c72a4bb964adf310318e9f2e6651569ba6f842ee
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com
-docker build -t ${ECR_REPO} .
+docker build -t ${ECR_REPO} --build-arg TOIL_VERSION=${TOIL_VERSION} .
 docker tag ${ECR_REPO}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest
 docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest
 ```
