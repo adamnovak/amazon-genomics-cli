@@ -45,7 +45,7 @@ var DefaultTags = map[string]string{
 	constants.MINIWDL:   "v0.1.11",
 	constants.NEXTFLOW:  "21.04.3",
 	constants.SNAKEMAKE: "internal-fork",
-	constants.TOIL:      "5.7.0a1-7e49adbdc668acd6efc14735679c10fcda4b5e10",
+	constants.TOIL:      "5.7.0a1-a297df0a776cae99defbd8dde9dbdadcd8bc4d2a",
 	constants.WES:       "0.1.0",
 }
 
