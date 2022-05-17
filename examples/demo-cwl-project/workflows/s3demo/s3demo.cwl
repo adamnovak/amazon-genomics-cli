@@ -9,10 +9,6 @@ inputs:
     type: File
   - id: image_directory
     type: Directory
-  - id: image_parent_directory
-    type: Directory
-  - id: image_subdirname
-    type: string
   - id: image_filename
     type: string
     
@@ -36,26 +32,6 @@ steps:
       input_image: file_from_directory/file
     out: [output_image]
     
-  directory_from_directory:
-    run: directory-from-directory.cwl
-    in:
-      dir: image_parent_directory
-      filename: image_subdirname
-    out: [directory]
-    
-  file_from_subdirectory:
-    run: file-from-directory.cwl
-    in:
-      dir: directory_from_directory/directory
-      filename: image_filename
-    out: [file]
-    
-  resize_from_subdirectory:
-    run: shrink-image.cwl
-    in:
-      input_image: file_from_subdirectory/file
-    out: [output_image]
-  
 outputs:
   - id: image_from_file
     type: File
@@ -63,6 +39,3 @@ outputs:
   - id: image_from_directory
     type: File
     outputSource: resize_from_directory/output_image
-  - id: image_from_subdirectory
-    type: File
-    outputSource: resize_from_subdirectory/output_image
