@@ -50,3 +50,15 @@ docker tag ${ECR_REPO}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com
 docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest
 ```
 
+### Using in AGC
+
+To use a custom image in an AGC context, go to the directory for the project you want to use it with, set the environment variables, and deploy the context:
+
+```bash
+cd ../../../examples/demo-cwl-project/
+export ECR_TOIL_ACCOUNT_ID="${AWS_ACCOUNT}"
+export ECR_TOIL_TAG=latest
+export ECR_TOIL_REPOSITORY="${ECR_REPO}"
+export ECR_TOIL_REGION="${AWS_REGION}"
+agc context deploy --context myContext
+```

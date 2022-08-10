@@ -4,8 +4,8 @@ env:
   shell: bash
   variables:
     TOIL_IMAGE_NAME: "toil"
-    TOIL_VERSION_PREFIX: "5.7.0a1-"
-    TOIL_VERSION: "d831f74e918c4a01e961e3b45504a92d1827b8b3"
+    TOIL_VERSION_PREFIX: "5.8.0a1-"
+    TOIL_VERSION: "24fbea4dc7e7fd2c96859a9dfe88f2ca39c7474b"
 phases:
   pre_build:
     commands:
