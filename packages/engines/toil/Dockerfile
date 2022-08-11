@@ -34,6 +34,7 @@ RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - \
     && yum install -y \
     python3 \
     rabbitmq-server \
+    erlang \
     nodejs \
     git \
     && yum clean -y all \
